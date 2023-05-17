@@ -1,12 +1,13 @@
 import cv2
 import mediapipe as mp
 import numpy as np
-411
+
 max_num_hands = 4
 gesture = {
     0:'fist', 1:'one', 2:'two', 3:'three', 4:'four', 5:'five',
     6:'six', 7:'rock', 8:'spiderman', 9:'yeah', 10:'ok', 11:'fy'
 }
+
 rps_gesture = {0:'rock', 2:'IGuNe', 5:'paper', 9:'scissors', 11:'fuckyou'}
 
 # MediaPipe hands model
@@ -46,11 +47,12 @@ while cap.isOpened():
             joint = np.zeros((21, 3))
             for j, lm in enumerate(res.landmark):
                 joint[j] = [lm.x, lm.y, lm.z]
-
+            
             # Compute angles between joints
             v1 = joint[[0,1,2,3,0,5,6,7,0,9,10,11,0,13,14,15,0,17,18,19],:] # Parent joint
             v2 = joint[[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],:] # Child joint
             v = v2 - v1 # [20,3]
+
             # Normalize v
             v = v / np.linalg.norm(v, axis=1)[:, np.newaxis]
 
